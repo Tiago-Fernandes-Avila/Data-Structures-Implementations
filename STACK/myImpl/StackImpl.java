@@ -1,3 +1,9 @@
+package myImpl;
+
+import java.util.Iterator;
+
+import javax.management.RuntimeErrorException;
+
 public class StackImpl<T> implements StackTad<T> {
 
     public StackImpl(int tamanho) {
@@ -12,30 +18,38 @@ public class StackImpl<T> implements StackTad<T> {
     @Override
     public void push(T elemento) {
         if (isEmpty()) {
-            topo++;
+            this.topo++;
             stack[topo] = elemento;
             topo++;
         } else {
             stack[topo] = elemento;
-            topo++;
+            this.topo++;
         }
 
     }
 
     @Override
-    public T pop() {
-        return null;
+    public T  pop() { //return null if stack isEmpty
+        
+        if (!isEmpty()){
+            
+            T aux = (T) stack[lastIndex()];
+            stack[lastIndex()] = null;
+            this.topo--;
+            return aux;
+
+        } else {
+            throw new RuntimeException("Stack Empty!");  
+        }
+        
     }
 
     public boolean isEmpty() {
-        return topo == -1;
+        return lastIndex() == -1;
     }
 
     public int lastIndex() {
-        if (isEmpty()) {
-            return -1;
-        }
-        return topo -1;
+        return topo - 1;
     }
 
     @Override
@@ -51,9 +65,11 @@ public class StackImpl<T> implements StackTad<T> {
                 sb.append(stack[i] + ", ");
             }
         }
-
+        
         sb.append(stack[lastIndex()] + "]");
 
         return sb.toString();
     }
+
+    
 }
